@@ -1,5 +1,5 @@
 .main-card {
-  display: flex;
+  display: grid;
   justify-content: center;
   margin-top: 12px;
   align-items: center;
