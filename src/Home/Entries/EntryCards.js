@@ -9,42 +9,125 @@ import {
   Modal,
   Radio,
   RadioGroup,
+  Snackbar,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import DatePicker from "@mui/lab/DatePicker";
 import "./EntryCards.css";
 import Button from "@mui/joy/Button";
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
+import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 
 function EntryCards() {
   const [openPopup, setOpenPopup] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    amount: "",
+    date: null,
+    type: "option1",
+  });
+  const [entries, setEntries] = useState([]);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const [editIndex, setEditIndex] = useState(null);
 
   function handleOpenPopup() {
     setOpenPopup(true);
   }
+
   function handleClosePopup() {
     setOpenPopup(false);
   }
-  function handleOnSubmit() {
+
+  function handleRadioChange(e) {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      type: e.target.value,
+    }));
+  }
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  }
+
+  function handleDateChange(date) {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      date: date,
+    }));
+  }
+
+  function handleOnSubmit(e) {
+    e.preventDefault();
+    const newEntry = { ...formData };
+
+    if (editIndex !== null) {
+      const updatedEntries = [...entries];
+      updatedEntries[editIndex] = newEntry;
+      setEntries(updatedEntries);
+      setToastMessage("Entry updated");
+    } else {
+      // Otherwise, add new entry
+      setEntries([...entries, newEntry]);
+      setToastMessage("Entry added");
+    }
+
+    setToastOpen(true);
     handleClosePopup();
+  }
+
+  function handleDeleteEntry(index) {
+    const newEntries = [...entries];
+    newEntries.splice(index, 1);
+    setEntries(newEntries);
+    setToastMessage("Entry deleted");
+    setToastOpen(true);
+  }
+
+  function handleEditEntry(index) {
+    setEditIndex(index);
+    const entryToEdit = entries[index];
+
+    setFormData({
+      name: entryToEdit.name,
+      date: entryToEdit.date,
+      amount: entryToEdit.amount,
+      type: entryToEdit.type,
+    });
+    setOpenPopup(true);
   }
 
   return (
     <>
       <div className="main__div">
-        <div className="entry__cards">
-          <Card variant="soft" className="entry__cards__item">
+        {entries.map((entry, index) => (
+          <Card
+            variant="soft"
+            className={`entry__cards__item ${
+              entry.type === "option1" ? "red" : "green"
+            }`}
+            key={index}
+          >
             <CardContent>
-              <div>
-                <Typography level="title-md">Ananya Pathak</Typography>
-                <Typography>₹ 500</Typography>
-                <DeleteTwoToneIcon />
-                <EditNoteRoundedIcon />
+              <div className="entry__cards">
+                <div className="entry__cards__1">
+                  <Typography level="title-md">{entry.name}</Typography>
+                  <Typography>₹ {entry.amount}</Typography>
+                  <Typography>{entry.date}</Typography>
+                </div>
+                <div className="entry__cards__2">
+                  <DeleteTwoToneIcon onClick={() => handleDeleteEntry(index)} />
+
+                  <EditNoteRoundedIcon onClick={() => handleEditEntry(index)} />
+                </div>
               </div>
             </CardContent>
           </Card>
-        </div>
+        ))}
         <div className="add__button__container">
           <Button className="add__button" onClick={handleOpenPopup}>
             +
@@ -52,37 +135,64 @@ function EntryCards() {
         </div>
 
         <div className="modal">
-          <Modal open={openPopup} onClose={handleClosePopup} back>
+          <Modal open={openPopup} onClose={handleClosePopup}>
             <div className="modal__child">
-            <Box className={"modal__content"}>
-              <Typography variant="h5">Add new entry</Typography>
-              <form onSubmit={handleOnSubmit}>
-                <TextField label="Name"></TextField>
-                <DatePicker label="Date"></DatePicker>
-                <TextField label="Amount" type="number"></TextField>
-                <FormControl component="fieldset">
-                  <RadioGroup className="radio-btn">
-                    <FormControlLabel
-                      value="option1"
-                      label="Borrowed"
-                      control={<Radio />}
-                    />
-                    <FormControlLabel
-                      value="option2"
-                      label="Lend"
-                      control={<Radio />}
-                    />
-                  </RadioGroup>
-                </FormControl>
-                <Button type="submit">
-                  Add
-                </Button>
-              </form>
-            </Box>
+              <Box className={"modal__content"}>
+                <h3>{editIndex !== null ? "Edit entry" : "Add new entry"}</h3>
+                <form onSubmit={handleOnSubmit}>
+                  <TextField
+                    label="Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    name="name"
+                  />
+                  <TextField
+                    label="Amount"
+                    type="number"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    name="amount"
+                  />
+                  <TextField
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => handleDateChange(e.target.value)}
+                    name="date"
+                    className="date-input"
+                  />
+                  <FormControl component="fieldset">
+                    <RadioGroup
+                      className="radio-btn"
+                      value={formData.type}
+                      onChange={handleRadioChange}
+                    >
+                      <FormControlLabel
+                        value="option1"
+                        label="Borrowed"
+                        control={<Radio />}
+                      />
+                      <FormControlLabel
+                        value="option2"
+                        label="Lend"
+                        control={<Radio />}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <Button type="submit">
+                    {editIndex !== null ? "Update" : "Add"}
+                  </Button>
+                </form>
+              </Box>
             </div>
           </Modal>
         </div>
       </div>
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={1500}
+        onClose={() => setToastOpen(false)}
+        message={toastMessage}
+      />
     </>
   );
 }

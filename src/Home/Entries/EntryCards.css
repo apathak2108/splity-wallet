@@ -1,7 +1,13 @@
 .entry__cards {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.entry__cards__1 {
+  text-align: left;
+}
+.entry__cards__2 {
   display: grid;
-  justify-content: center;
-  align-items: center;
 }
 
 .entry__cards__item {
@@ -10,9 +16,9 @@
 }
 .add__button__container {
   position: fixed;
-  bottom: 2vh; /* Adjust as needed */
-  right: 2vh; /* Adjust as needed */
-  z-index: 9999; /* Ensure it appears above other content */
+  bottom: 2vh;
+  right: 2vh;
+  z-index: 9999;
 }
 
 .add__button {
@@ -54,7 +60,7 @@
 }
 
 .modal__content {
-  height: 300px;
+  height: 400px;
   background: aliceblue;
   width: 300px;
   align-items: center;
@@ -68,7 +74,6 @@ form {
   display: flex;
   flex-flow: column;
   align-items: center;
-  
 }
 
 .radio-btn {
@@ -78,4 +83,22 @@ form {
 
 button {
   width: 100%;
+}
+
+.date-input {
+  width: 209px;
+}
+.main__div {
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  display: grid;
+}
+.entry__cards__item.red {
+  background-color: #ffd9d9;
+}
+
+.entry__cards__item.green {
+  background-color: #cdf7cd;
 }
