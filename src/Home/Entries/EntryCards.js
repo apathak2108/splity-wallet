@@ -17,19 +17,20 @@ import Button from "@mui/joy/Button";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 
-function EntryCards() {
+function EntryCards({ handleArrayOfEntries }) {
   const [openPopup, setOpenPopup] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    amount: "",
+    amount: null,
     date: null,
     type: "option1",
   });
   const [entries, setEntries] = useState([]);
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-
   const [editIndex, setEditIndex] = useState(null);
+
+  handleArrayOfEntries(entries);
 
   function handleOpenPopup() {
     setOpenPopup(true);
@@ -62,7 +63,7 @@ function EntryCards() {
   }
 
   function handleOnSubmit(e) {
-    e.preventDefault();
+    
     const newEntry = { ...formData };
 
     if (editIndex !== null) {
@@ -71,11 +72,16 @@ function EntryCards() {
       setEntries(updatedEntries);
       setToastMessage("Entry updated");
     } else {
-      // Otherwise, add new entry
       setEntries([...entries, newEntry]);
       setToastMessage("Entry added");
     }
-
+    setFormData({
+      name: "",
+      amount: null,
+      date: null,
+      type: "option1",
+    });
+    setEditIndex(null);
     setToastOpen(true);
     handleClosePopup();
   }
@@ -91,7 +97,6 @@ function EntryCards() {
   function handleEditEntry(index) {
     setEditIndex(index);
     const entryToEdit = entries[index];
-
     setFormData({
       name: entryToEdit.name,
       date: entryToEdit.date,

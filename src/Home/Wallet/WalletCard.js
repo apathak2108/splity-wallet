@@ -4,10 +4,7 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import "./WalletCard.css";
 
-export default function InteractiveCard() {
-  let balance = -5520;
-
-  console.log(balance);
+export default function WalletCard({totalAmount}) {
   return (
     <div className="main-card">
       <Card
@@ -34,14 +31,15 @@ export default function InteractiveCard() {
             <Typography
               component={"span"}
               sx={{
-                color: balance < 0 ? "red" : "green",
+                color: totalAmount < 0 ? "red" : "green",
               }}
             >
-              {balance}
+              {totalAmount}
             </Typography>
           </Typography>
         </CardContent>
       </Card>
+      {/* <EntryCards  totalAmount={totalAmount} updateTotalAmount={updateTotalAmount} /> */}
     </div>
   );
 }
