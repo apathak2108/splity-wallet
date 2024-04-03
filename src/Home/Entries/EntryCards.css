@@ -60,7 +60,7 @@
 }
 
 .modal__content {
-  height: 400px;
+  height: 438px;
   background: aliceblue;
   width: 300px;
   align-items: center;
@@ -85,8 +85,9 @@ button {
   width: 100%;
 }
 
+
 .date-input {
-  width: 209px;
+  width: 223px;
 }
 .main__div {
   justify-content: center;

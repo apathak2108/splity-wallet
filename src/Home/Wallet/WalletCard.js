@@ -14,10 +14,11 @@ export default function WalletCard({totalAmount}) {
           "&:hover": {
             boxShadow: "md",
             borderColor: "neutral.outlinedHoverBorder",
+            
           },
         }}
       >
-        <CardContent>
+        <CardContent sx={{textAlign: "center"}}>
           <Typography level="title-lg" id="card-description">
             Balance
           </Typography>
