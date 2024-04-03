@@ -5,7 +5,7 @@ import WalletCard from "./Wallet/WalletCard";
 function Home() {
   const [totalAmount, setTotalAmount] = useState(0);
 
-  function handleArrayOfEntries(arrayOfEntries) {
+  function handleTotalAmount(arrayOfEntries) {
     let borrowedAmount = 0,
       lendedAmount = 0;
     const arrayOfBorrowedAmount = arrayOfEntries.filter(
@@ -24,31 +24,10 @@ function Home() {
     setTotalAmount(finalAmount);
   }
 
-  // const getBalance=(value)=> {
-  //   if (value.type === 'option1') {
-  //     const finalAmount = totalAmount - parseInt(value.amount);
-  //     setTotalAmount(finalAmount);
-
-  //   } else if (value.type === 'option2') {
-  //     const finalAmount = totalAmount + parseInt(value.amount);
-  //     setTotalAmount(finalAmount);
-  //   }
-  // }
-  // const amountOfDeletedEntry = (amount, type) => {
-  //   amount = parseInt(amount);
-  //   if (type === "option1") {
-  //     const finalAmount = totalAmount + amount;
-  //     setTotalAmount(finalAmount);
-  //   }
-  //   else {
-  //     const finalAmount = totalAmount - amount;
-  //     setTotalAmount(finalAmount);
-  //   }
-  // }
   return (
     <div>
       <WalletCard totalAmount={totalAmount} />
-      <EntryCards handleArrayOfEntries={handleArrayOfEntries} />
+      <EntryCards handleTotalAmount={handleTotalAmount} />
     </div>
   );
 }

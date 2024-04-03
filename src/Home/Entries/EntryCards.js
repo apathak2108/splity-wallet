@@ -16,94 +16,97 @@ import "./EntryCards.css";
 import Button from "@mui/joy/Button";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addEntry,
+  editEntry,
+  deleteEntry,
+  handleModalView,
+  submitForm,
+} from "../../redux/action/entryAction";
 
-function EntryCards({ handleArrayOfEntries }) {
-  const [openPopup, setOpenPopup] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    amount: null,
-    date: null,
-    type: "option1",
-  });
-  const [entries, setEntries] = useState([]);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [editIndex, setEditIndex] = useState(null);
+function EntryCards({ handleTotalAmount }) {
+  const { openPopup, formData, entries, toastOpen, toastMesage, editIndex } = useSelector((state) => state.entry);
+  const dispatch = useDispatch();
+  // const [entries, setEntries] = useState([]);
+  // const [toastOpen, setToastOpen] = useState(false);
+  // const [toastMessage, setToastMessage] = useState("");
+  // const [editIndex, setEditIndex] = useState(null);
 
-  handleArrayOfEntries(entries);
-
+  handleTotalAmount(entries);
+  
+  console.log(openPopup, "openPopup");
   function handleOpenPopup() {
-    setOpenPopup(true);
+    dispatch(handleModalView());
+    // setOpenPopup(true);
   }
 
+
   function handleClosePopup() {
-    setOpenPopup(false);
+    dispatch(handleModalView());
   }
 
   function handleRadioChange(e) {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      type: e.target.value,
-    }));
+    dispatch(addEntry("type", e.target.value));
   }
 
   function handleInputChange(e) {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    dispatch(addEntry(name, value));
+    // setFormData((prevFormData) => ({
+    //   ...prevFormData,
+    //   [name]: value,
+    // }));
   }
 
   function handleDateChange(date) {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      date: date,
-    }));
+    dispatch(addEntry("date", date));
   }
 
   function handleOnSubmit(e) {
-    
-    const newEntry = { ...formData };
+    // dispatch(addEntry(formData))
+    dispatch(submitForm());
+    // const newEntry = { ...formData };
 
-    if (editIndex !== null) {
-      const updatedEntries = [...entries];
-      updatedEntries[editIndex] = newEntry;
-      setEntries(updatedEntries);
-      setToastMessage("Entry updated");
-    } else {
-      setEntries([...entries, newEntry]);
-      setToastMessage("Entry added");
-    }
-    setFormData({
-      name: "",
-      amount: null,
-      date: null,
-      type: "option1",
-    });
-    setEditIndex(null);
-    setToastOpen(true);
+    // if (editIndex !== null) {
+    //   const updatedEntries = [...entries];
+    //   updatedEntries[editIndex] = newEntry;
+    //   setEntries(updatedEntries);
+    //   setToastMessage("Entry updated");
+    // } else {
+    //   setEntries([...entries, newEntry]);
+    //   setToastMessage("Entry added");
+    // }
+    // setFormData({
+    //   name: "",
+    //   amount: null,
+    //   date: null,
+    //   type: "option1",
+    // });
+    // setEditIndex(null);
+    // setToastOpen(true);
     handleClosePopup();
   }
 
   function handleDeleteEntry(index) {
-    const newEntries = [...entries];
-    newEntries.splice(index, 1);
-    setEntries(newEntries);
-    setToastMessage("Entry deleted");
-    setToastOpen(true);
+    // const newEntries = [...entries];
+    // newEntries.splice(index, 1);
+    dispatch(deleteEntry(index));
+    // setEntries(newEntries);
+    // setToastMessage("Entry deleted");
+    // setToastOpen(true);
   }
 
   function handleEditEntry(index) {
-    setEditIndex(index);
+    // setEditIndex(index);
     const entryToEdit = entries[index];
-    setFormData({
-      name: entryToEdit.name,
-      date: entryToEdit.date,
-      amount: entryToEdit.amount,
-      type: entryToEdit.type,
-    });
-    setOpenPopup(true);
+    // setFormData({
+    //   name: entryToEdit.name,
+    //   date: entryToEdit.date,
+    //   amount: entryToEdit.amount,
+    //   type: entryToEdit.type,
+    // });
+    // setOpenPopup(true);
   }
 
   return (
@@ -150,6 +153,7 @@ function EntryCards({ handleArrayOfEntries }) {
                     value={formData.name}
                     onChange={handleInputChange}
                     name="name"
+                    required
                   />
                   <TextField
                     label="Amount"
@@ -157,13 +161,17 @@ function EntryCards({ handleArrayOfEntries }) {
                     value={formData.amount}
                     onChange={handleInputChange}
                     name="amount"
+                    margin="dense"
+                    required
                   />
                   <TextField
                     type="date"
                     value={formData.date}
                     onChange={(e) => handleDateChange(e.target.value)}
                     name="date"
-                    className="date-input"
+                    fullWidth
+                    margin="dense"
+                    required
                   />
                   <FormControl component="fieldset">
                     <RadioGroup
@@ -192,12 +200,12 @@ function EntryCards({ handleArrayOfEntries }) {
           </Modal>
         </div>
       </div>
-      <Snackbar
+      {/* <Snackbar
         open={toastOpen}
         autoHideDuration={1500}
         onClose={() => setToastOpen(false)}
         message={toastMessage}
-      />
+      /> */}
     </>
   );
 }
