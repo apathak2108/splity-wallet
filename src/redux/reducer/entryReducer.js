@@ -1,10 +1,11 @@
 import {
-  ADD_ENTRY,
+  INPUT_CHANGE,
   EDIT_ENTRY,
   DELETE_ENTRY,
   RESET_FORM_DATA,
   IS_MODAL_OPEN,
   SUBMIT_FORM,
+  TO_DO_EDIT_INDEX_NULL,
 } from "../action/entryActionTypes";
 
 const initialState = {
@@ -23,22 +24,26 @@ const initialState = {
 
 const entryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_ENTRY:
+    case INPUT_CHANGE:
       return {
         ...state,
-        
         formData: {
-          ...state.formData,
-          [action.payload.name]: action.payload.value,
+          ...action.payload,
         },
-        entries: [...state.entries, action.payload],
       };
     case EDIT_ENTRY:
       return {
         ...state,
+        formData: { ...action.payload.entryToEdit },
+        editIndex: action.payload.index,
         openPopup: true,
         toastOpen: true,
         toastMessage: "Entry editted successfully",
+      };
+    case TO_DO_EDIT_INDEX_NULL:
+      return {
+        ...state,
+        editIndex: null,
       };
     case DELETE_ENTRY:
       return {
@@ -61,7 +66,17 @@ const entryReducer = (state = initialState, action) => {
         },
       };
     case SUBMIT_FORM:
-      return state;
+      return {
+        ...state,
+        entries: [...action.payload],
+        openPopup: false,
+        formData: {
+          name: "",
+          amount: null,
+          date: null,
+          type: "option1",
+        },
+      };
     default:
       return state;
   }
