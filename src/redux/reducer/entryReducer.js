@@ -6,6 +6,7 @@ import {
   IS_MODAL_OPEN,
   SUBMIT_FORM,
   TO_DO_EDIT_INDEX_NULL,
+  IS_TOAST_OPEN,
 } from "../action/entryActionTypes";
 
 const initialState = {

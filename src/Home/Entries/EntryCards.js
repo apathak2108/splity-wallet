@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
@@ -9,7 +9,6 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  Snackbar,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import "./EntryCards.css";
@@ -23,13 +22,16 @@ import {
   deleteEntry,
   handleModalView,
   submitForm,
-  resetFormData,
 } from "../../redux/action/entryAction";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EntryCards({ handleTotalAmount }) {
-  const { openPopup, formData, entries, toastOpen, toastMesage, editIndex } =
-    useSelector((state) => state.entry);
+  const { openPopup, formData, entries, editIndex } = useSelector(
+    (state) => state.entry
+  );
   const dispatch = useDispatch();
+
   handleTotalAmount(entries);
 
   function handleOpenPopup() {
@@ -56,10 +58,12 @@ function EntryCards({ handleTotalAmount }) {
   function handleOnSubmit(e) {
     e.preventDefault();
     dispatch(submitForm());
+    toast.dark("Entry added !");
   }
 
   function handleDeleteEntry(index) {
     dispatch(deleteEntry(index));
+    toast.dark("Entry deleted !")
   }
 
   function handleEditEntry(index) {
@@ -69,30 +73,72 @@ function EntryCards({ handleTotalAmount }) {
   return (
     <>
       <div className="main__div">
-        {entries.map((entry, index) => (
-          <Card
-            variant="soft"
-            className={`entry__cards__item ${
-              entry.type === "option1" ? "red" : "green"
-            }`}
-            key={index}
-          >
-            <CardContent>
-              <div className="entry__cards">
-                <div className="entry__cards__1">
-                  <Typography level="title-md">{entry.name}</Typography>
-                  <Typography>₹ {entry.amount}</Typography>
-                  <Typography>{entry.date}</Typography>
-                </div>
-                <div className="entry__cards__2">
-                  <DeleteTwoToneIcon onClick={() => handleDeleteEntry(index)} />
+        {entries.map((entry, index) => {
+          const entryDate = new Date(entry.date);
+          const today = new Date();
+          const differenceInDays = (today - entryDate) / 86400000;
+          let interestRate = 0.005;
+          let interestDays = Math.floor(differenceInDays / 5);
 
-                  <EditNoteRoundedIcon onClick={() => handleEditEntry(index)} />
+          if (differenceInDays <= 5) {
+            interestDays = 1;
+          }
+
+          return (
+            <Card
+              variant="soft"
+              className={`entry__cards__item ${
+                entry.type === "option1" ? "red" : "green"
+              }`}
+              key={index}
+            >
+              <CardContent>
+                <div className="entry__cards">
+                  <div className="entry__cards__1">
+                    <Typography level="title-md">{entry.name}</Typography>
+                    <Typography fontWeight={"bold"}>
+                      ₹ {entry.amount}
+                    </Typography>
+                    <Typography>{entry.date}</Typography>
+                    <Typography>
+                      {entry.type === "option1"
+                        ? differenceInDays > 0
+                          ? `₹ -${(
+                              entry.amount *
+                              interestRate *
+                              interestDays
+                            ).toFixed(2)} (-${(
+                              interestRate *
+                              100 *
+                              interestDays
+                            ).toFixed(2)}%)`
+                          : "No interest"
+                        : differenceInDays > 0
+                        ? `₹ +${(
+                            entry.amount *
+                            interestRate *
+                            interestDays
+                          ).toFixed(2)} (+${(
+                            interestRate *
+                            100 *
+                            interestDays
+                          ).toFixed(2)}%)`
+                        : "No interest"}
+                    </Typography>
+                  </div>
+                  <div className="entry__cards__2">
+                    <DeleteTwoToneIcon
+                      onClick={() => handleDeleteEntry(index)}
+                    />
+                    <EditNoteRoundedIcon
+                      onClick={() => handleEditEntry(index)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          );
+        })}
         <div className="add__button__container">
           <Button className="add__button" onClick={handleOpenPopup}>
             +
@@ -123,6 +169,7 @@ function EntryCards({ handleTotalAmount }) {
                   />
                   <TextField
                     type="date"
+                    label="Date of Transaction"
                     value={formData.date}
                     onChange={(e) => handleDateChange(e.target.value)}
                     name="date"
@@ -130,6 +177,7 @@ function EntryCards({ handleTotalAmount }) {
                     margin="dense"
                     required
                   />
+
                   <FormControl component="fieldset">
                     <RadioGroup
                       className="radio-btn"
@@ -156,13 +204,15 @@ function EntryCards({ handleTotalAmount }) {
             </div>
           </Modal>
         </div>
+        <ToastContainer
+          closeButton={false}
+          className="toast__container"
+          position="bottom-left"
+          autoClose={2000}
+          hideProgressBar={false}
+          closeOnClick
+        />
       </div>
-      {/* <Snackbar
-        open={toastOpen}
-        autoHideDuration={1500}
-        onClose={() => setToastOpen(false)}
-        message={toastMessage}
-      /> */}
     </>
   );
 }
