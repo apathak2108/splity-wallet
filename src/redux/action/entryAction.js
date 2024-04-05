@@ -36,10 +36,11 @@ export const submitForm = () => {
         type: SUBMIT_FORM,
         payload: updatedEntries,
       });
-      dispatch(toDoEditIndexNull())
+      dispatch(toDoEditIndexNull());
     }
   };
 };
+
 
 export const resetFormData = () => {
   return {

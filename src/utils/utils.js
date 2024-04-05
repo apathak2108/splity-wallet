@@ -1,17 +1,10 @@
-export function handleEditEntry(entries, setEditIndex, setFormData, setOpenPopup, index) {
-    setEditIndex(index);
-    const entryToEdit = entries[index];
-    setFormData({
-      name: entryToEdit.name,
-      date: entryToEdit.date,
-      amount: entryToEdit.amount,
-      type: entryToEdit.type,
-    });
-    setOpenPopup(false);
-    setFormData({
-        name: "",
-        amount: null,
-        date: null,
-        type: "option1",
-      });
-}
+export const getCurrentDate = () => {
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1;
+  const year = currentDate.getFullYear();
+  const formattedDate = `${year}-${month < 10 ? "0" : ""}${month}-${
+    day < 10 ? "0" : ""
+  }${day}`;
+  return formattedDate;
+};

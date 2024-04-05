@@ -60,7 +60,7 @@
 }
 
 .modal__content {
-  height: 438px;
+  height: 427px;
   background: aliceblue;
   width: 300px;
   align-items: center;
@@ -90,16 +90,36 @@ button {
   width: 223px;
 }
 .main__div {
+  display: flex;
   justify-content: center;
   height: 100%;
   width: 100%;
   align-items: center;
-  display: grid;
+  flex-flow: column;  
 }
+
 .entry__cards__item.red {
   background-color: #ffd9d9;
 }
 
 .entry__cards__item.green {
   background-color: #cdf7cd;
+}
+
+.entry__cards__container {
+  height: 500px;
+  width: 400px;
+  border: 1px solid red;
+  display: flex;
+}
+
+input[type=date]:required:invalid::-webkit-datetime-edit {
+  color: transparent;
+}
+input[type=date]:focus::-webkit-datetime-edit {
+  color: black !important;
+}
+
+.toast__container {
+  display: flex;
 }

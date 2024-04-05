@@ -1,10 +1,11 @@
-import React from "react";
+import React,{ useState } from "react";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import "./WalletCard.css";
 
 export default function WalletCard({totalAmount}) {
+
   return (
     <div className="main-card">
       <Card
