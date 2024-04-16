@@ -6,7 +6,7 @@ import {
   IS_MODAL_OPEN,
   SUBMIT_FORM,
   TO_DO_EDIT_INDEX_NULL,
-  IS_TOAST_OPEN,
+  IS_LOAD_ENTRIES,
 } from "../action/entryActionTypes";
 
 const initialState = {
@@ -18,8 +18,6 @@ const initialState = {
     type: "option1",
   },
   entries: [],
-  toastOpen: false,
-  toastMessage: "",
   editIndex: null,
 };
 
@@ -77,6 +75,11 @@ const entryReducer = (state = initialState, action) => {
           date: null,
           type: "option1",
         },
+      };
+    case IS_LOAD_ENTRIES:
+      return {
+        ...state,
+        entries: action.payload,
       };
     default:
       return state;

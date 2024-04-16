@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
@@ -22,6 +22,7 @@ import {
   deleteEntry,
   handleModalView,
   submitForm,
+  isLoadEntries,
 } from "../../redux/action/entryAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,7 +33,19 @@ function EntryCards({ handleTotalAmount }) {
   );
   const dispatch = useDispatch();
 
-  handleTotalAmount(entries);
+  useEffect(() => {
+    const storedEntries = JSON.parse(localStorage.getItem("entries"));
+    handleTotalAmount(storedEntries);
+
+    if (storedEntries) {
+      dispatch(isLoadEntries(storedEntries));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("entries", JSON.stringify(entries));
+    handleTotalAmount(entries);
+  }, [entries]);
 
   function handleOpenPopup() {
     dispatch(handleModalView());
@@ -63,7 +76,7 @@ function EntryCards({ handleTotalAmount }) {
 
   function handleDeleteEntry(index) {
     dispatch(deleteEntry(index));
-    toast.dark("Entry deleted !")
+    toast.dark("Entry deleted !");
   }
 
   function handleEditEntry(index) {
@@ -73,7 +86,7 @@ function EntryCards({ handleTotalAmount }) {
   return (
     <>
       <div className="main__div">
-        {entries.map((entry, index) => {
+        {entries?.map((entry, index) => {
           const entryDate = new Date(entry.date);
           const today = new Date();
           const differenceInDays = (today - entryDate) / 86400000;
