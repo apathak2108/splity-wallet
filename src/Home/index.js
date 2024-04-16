@@ -12,7 +12,7 @@ function Home() {
       lendedAmount = 0;
     const today = new Date(todayDate);
 
-    for (let i = 0; i < arrayOfEntries.length; i++) {
+    for (let i = 0; i < arrayOfEntries?.length; i++) {
       const entryDate = new Date(arrayOfEntries[i].date);
       const differenceInDays = (today - entryDate) / 86400000;
 
