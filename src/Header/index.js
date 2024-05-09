@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import logo from "../images/logo-splitwallet.webp";
+import logo from "../images/logo-splitwallet.png";
 
 function Header() {
   return (
