@@ -1,6 +1,6 @@
 import React from "react";
 import "./Header.css";
-import logo from "C:/Users/HP/Downloads/header-icon-removebg-preview.png";
+import logo from "../images/logo-splitwallet.webp";
 
 function Header() {
   return (

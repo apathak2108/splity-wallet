@@ -19,10 +19,10 @@ function Home() {
       if (differenceInDays > 0) {
         let interestRate = 0.005;
         let interestDays = Math.floor(differenceInDays / 5);
-        
+
         if (differenceInDays <= 5) {
           interestDays = 1;
-        } 
+        }
 
         if (arrayOfEntries[i].type === "option1") {
           if (interestDays > 0) {
@@ -35,8 +35,7 @@ function Home() {
             lendedAmount += lendedAmount * interestRate * interestDays;
           }
         }
-      }
-      else {
+      } else {
         if (arrayOfEntries[i].type === "option1") {
           borrowedAmount += parseInt(arrayOfEntries[i].amount);
         } else {

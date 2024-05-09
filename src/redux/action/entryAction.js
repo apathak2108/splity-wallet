@@ -5,6 +5,7 @@ import {
   SUBMIT_FORM,
   INPUT_CHANGE,
   TO_DO_EDIT_INDEX_NULL,
+  IS_LOAD_ENTRIES,
 } from "./entryActionTypes";
 
 export const inputChange = (name, value) => {
@@ -16,6 +17,15 @@ export const inputChange = (name, value) => {
         ...formData,
         [name]: value,
       },
+    });
+  };
+};
+
+export const isLoadEntries = (entries) => {
+  return (dispatch) => {
+    dispatch({
+      type: IS_LOAD_ENTRIES,
+      payload: entries,
     });
   };
 };
@@ -40,7 +50,6 @@ export const submitForm = () => {
     }
   };
 };
-
 
 export const resetFormData = () => {
   return {
