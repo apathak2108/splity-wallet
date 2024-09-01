@@ -16,7 +16,7 @@ cd path/to/your/directory
 ```
 
 4. **Clone the Repository**: Use the `git clone` command followed by the given repository URL:
-   https://github.com/apathak2108/shoonya-life-frontend-assignment.git
+   https://github.com/apathak2108/splity-wallet.git
 
 5. **Enter the Project Directory**: After cloning, navigate into the cloned repository's directory by entering given command:
    cd your-repo-name
