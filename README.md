@@ -18,7 +18,7 @@ cd path/to/your/directory
 4. **Clone the Repository**: Use the `git clone` command followed by the given repository URL:
    https://github.com/apathak2108/splity-wallet.git
 
-5. **Enter the Project Directory**: After cloning, navigate into the cloned repository's directory by entering given command:
+5. **Enter the Project Directory**: After cloning, navigate into the cloned repository's directory by entering the given command:
    cd your-repo-name
 
 ## Running the Project
@@ -53,7 +53,7 @@ This project uses a combination of styling methods:
 
 ### State Management
 
-- **Redux**: The application uses [Redux](https://redux.js.org/) for state management. Redux is set up in the `src/store` directory, with reducers combined in `rootReducer.js`.
+- **Redux**: The application uses [Redux] (https://redux.js.org/) for state management. Redux is set up in the `src/store` directory, with reducers combined in `rootReducer.js`.
 
 - **Actions and Reducers**: Defined in the `src/redux` directory. Each module has its own slice.
 
